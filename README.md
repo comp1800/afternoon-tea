@@ -1,11 +1,11 @@
-## My Web Application (Title)
+## My Web Application (Demo)
 
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Contents](#content)
 
 ## General Info
-This browser based web application to ...
+This browser based web application to demostrate miscellaneous user interactions. 
 	
 ## Technologies
 Technologies used for this project:
@@ -22,19 +22,16 @@ Content of the project folder:
  Top level of project folder: 
 ├── .gitignore               # Git ignore file
 ├── index.html               # landing HTML file, this is what users see when you come to url
+├── login.html               # the page with login widget
+├── main.html                # the page after login
 └── README.md
 
 It has the following subfolders and files:
 ├── .git                     # Folder for git repo
 ├── images                   # Folder for images
-    /blah.jpg                # 
 ├── scripts                  # Folder for scripts
-    /app.js                  # 
+    /app.js                  # This file contains the scripts used by main.html
 ├── styles                   # Folder for styles
-    /app.css                 # 
-
-Firebase hosting files: 
-├──  
 
 
 ```
