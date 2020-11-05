@@ -1,4 +1,4 @@
-## My Web Application (Demo)
+## My Afternoon Tea (Demo Application)
 
 * [General info](#general-info)
 * [Technologies](#technologies)
