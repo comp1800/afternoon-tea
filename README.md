@@ -5,7 +5,8 @@
 * [Contents](#content)
 
 ## General Info
-This browser based web application to demostrate miscellaneous user interactions. 
+A medley of "Demo Request" examples for you to enjoy with your afternoon tea.  
+This project is used to demostrate miscellaneous user interactions.  
 	
 ## Technologies
 Technologies used for this project:
