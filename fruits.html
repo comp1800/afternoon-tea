@@ -25,7 +25,7 @@
     <!-------------------------------------->
     <!-- Header Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="">myApp - Hi, <span id="username">friend</span></a>
+        <a class="navbar-brand" href="">myApp</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -38,67 +38,15 @@
                     <a class="nav-link" href="#">my profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="login.html" id="loginlink">login/signup</a>
+                    <a class="nav-link" href="login.html">login/signup</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="jumbotron">
-        <h1 class="display-4">Post your shop here</h1>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <!-- Basic Form -->
-                    <form id="myform">
-                    <br>
-                    <label>Shop Name:</label><br>
-                    <input type=" text" id="name" value="Carly's Coffee"><br><br>
-                        <label>Neighbourhood:</label><br>
-                        <input type="text" id="hood" value="Central Burnaby"><br><br>
-                        <label>Tell us why your cafe covid-friendly:</label><br>
-                        <input type="text" id="reason" value="spacious"><br><br>
-
-                        <!-- Toss in two checkboxes -->
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="check1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Open-windows
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="check2">
-                            <label class="form-check-label" for="defaultCheck2">
-                                Patio-seating
-                            </label>
-                        </div>
-
-                        <!-- submit button of the form -->
-                        <br><br><input type="submit" value="Post">
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- This is where shops are to be displayed -->
-    <div class="jumbotron">
-        <h1 class="display-4">List of Shops</h1>
-        <div id="shops"></div>
-    </div>
-
-    <!-- This is where quotes are to be displayed -->
-    <div class="jumbotron">
-        <h1 class="display-4">Display of quotes</h1>
-        <div id="quotes-go-here"></div>
-    </div>
-
-    <!-- Input text to get some user info -->
-    <div class="jumbotron">
-        <h1 class="display-4">What are your favourite fruits?</h1>
-        <p> Fruit1: </p> <input type="text" id="fruit1">
-        <p> Fruit2: </p> <input type="text" id="fruit2">
-        <button id="myBtn">SUBMIT</button>
+        <h1 class="display-4">These are your favourite fruits:</h1>
+        <div id="fruits-go-here"></div>
     </div>
 
     <!-------------------------------------------->
@@ -125,7 +73,7 @@
     <script src="scripts/firebase_api_carly.js"> </script>
 
     <!-- Your own JavaScript functions included here    -->
-    <script src="scripts/app.js"> </script>
+    <script src="scripts/fruit.js"> </script>
 
 </body>
 
