@@ -365,8 +365,7 @@ function getRestaurantCardwithStars() {
     </div>
 </div> 
 */
-
-function printCards(mycollection) {
+function createGrid(mycollection) {
     db.collection(mycollection)
         .get()
         .then(function (snap) {
@@ -403,7 +402,7 @@ function printCards(mycollection) {
             $("#quotes-go-here").append(message);
         })
 }
-printCards("shops");
+createGrid("shops");
 
 //----------------------------------------------------------------------
 //  This function populates the slots identified by "c1", "c2" etc.
@@ -417,7 +416,7 @@ function fillCards(mycollection) {
             snap.forEach(function (doc) {
                 console.log(doc.data());
                 var name = doc.data().name;
-                var address = doc.data().hood;
+                var address = doc.data().location;
                 i = i + 1;
                 var card = "#c"+i;
                 console.log(card);
@@ -426,7 +425,7 @@ function fillCards(mycollection) {
                     "<img class='card-img-top' src='images/blah.jpg' alt='Card image cap'>" +
                     "<div class='card-body'>" +
                     "<h5 class='card-title'>" + name + "</h5>" +
-                    "<p class='card-text'>Some quick example text.</p>" +
+                    "<p class='card-text'> "+ address + "</p>" +
                     "<a href='#' class='btn btn-primary'>Go somewhere</a>" +
                     "<div class='ratings'>" +
                     "* * * * * (stars go here)" +
