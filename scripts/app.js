@@ -109,17 +109,19 @@ function getQuotesIntoCards() {
             snap.forEach(function (doc) {
                 var m = doc.data().message;
                 //console.log(m);
-                var d1 = $("#quotes-go-here").append("<div class='card' style='width: 18rem;'>")
-                var i = d1.append("<img class='card-img-top' src='...' alt='Card image cap'>");
-                var d2 = d1.append("<div class='card-body'>")
-                d2.append("<h5 class='card-title'>" + m + "</h5>");
-                d2.append("<p class='card-text'>Some quick example text.</p>");
-                d2.append("<a href='#' class='btn btn-primary'>Go somewhere</a>");
+                var d1 = $("#quotes-go-here").append(
+                    "<div class='card' style='width: 18rem;'>" +
+                    "<img class='card-img-top' src='images/blah.jpg' alt='Card image cap'>" +
+                    "<div class='card-body'>" +
+                    "<h5 class='card-title'>" + m + "</h5>" +
+                    "<p class='card-text'>Some quick example text.</p>" +
+                    "<a href='#' class='btn btn-primary'>Go somewhere</a>" +
+                    "</div>" +
+                    "</div)");
             })
         })
 }
-getQuotesIntoCards();
-
+//getQuotesIntoCards();
 
 //---------------------------------------------------
 // This function checks to see if the user is sign in.
@@ -214,11 +216,8 @@ function displayFruits() {
 //displayFruits();
 
 //--------------------------------------------------------------------
-// This function is used to change the username and email of the logged in user
-// Use authentication SDK functions to change the authenticated user
-// 
-// Input param:  name, email, address strings
-//---------------------------------------------------------------------
+// Updates the authenticated user's "displayName"
+//--------------------------------------------------------------------
 function updateUserProfileAuth(name, email, address) {
     firebase.auth().onAuthStateChanged(function (user) {
         console.log("user is signed in: " + user.uid);
@@ -228,21 +227,23 @@ function updateUserProfileAuth(name, email, address) {
         }).then(function () {
             console.log("updated authenticated user profile");
             console.log("new display name: " + user.displayName);
-            updateUserProfileFirestore(name, email, address);
         }).catch(function (error) {
             console.log("authenticated user profile update failed");
         })
     })
 }
-updateUserProfileAuth("Bill Gates", "bill@bill.com", "Kingsway");
+//updateUserProfileAuth("Bill Gates");
 
-function updateUserProfileFirestore(name, elecmail, address) {
+//--------------------------------------------------------------------
+// Updates the firestore user's "name", "phone", "address"
+//--------------------------------------------------------------------
+function updateUserProfileFirestore(name, phone, address) {
     firebase.auth().onAuthStateChanged(function (user) {
         console.log("user is signed in: " + user.uid);
         db.collection("users").doc(user.uid)
             .update({
                 "name": name,
-                "email": elecmail,
+                "phone": phone,
                 "address": address
             }).then(function () {
                 console.log("updated users database");
@@ -251,8 +252,12 @@ function updateUserProfileFirestore(name, elecmail, address) {
             })
     })
 }
+//updateUserProfileFirestore("Bill Gates", "phone", "Kingsway")
 
-function getUserProfile() {
+//---------------------------------------------------------------------
+// Prints out the authenticated user object fields
+//---------------------------------------------------------------------
+function printUserAuth() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user != null) {
             console.log(user);
@@ -271,4 +276,164 @@ function getUserProfile() {
         }
     })
 }
-getUserProfile();
+//printUserAuth();
+
+//-------------------------------------------------------
+// Assume the HTML has a text input for user to enter location, 
+// and a "add" button
+// This function will listen to the "add" button, then grab the location
+// from the text input (id = "location")
+// and save it to the database for the authenticated user.
+//-------------------------------------------------------
+function getLocationAndSave() {
+    document.getElementById("addButton").addEventListener('click', function () {
+        var location = document.getElementById("location").value;
+        console.log(location);
+
+        // if the current user is signed in, then save it to their document
+        firebase.auth().onAuthStateChanged(function (user) {
+            db.collection("users").doc(user.uid)
+                .update({
+                    "location": location
+                })
+        })
+    })
+}
+getLocationAndSave();
+
+//---------------------------------------
+// replicate a collection of documents to a new location
+//---------------------------------------
+function replicateData(source, destination) {
+    db.collection(source)
+        .get()
+        .then(function (snap) {
+            snap.forEach(function (doc) {
+                console.log(doc.data());
+                db.collection(destination).add(doc.data());
+            })
+        })
+}
+//replicateData("/quotes", "/quotes_new");
+
+//------------------------------------------------
+// Same as getRestaurantCards() above but added a div 
+// inside for putting stars
+//------------------------------------------------
+function getRestaurantCardwithStars() {
+    db.collection("shops")
+        .get()
+        .then(function (snap) {
+            snap.forEach(function (doc) {
+                console.log(doc.data());
+                var name = doc.data().name;
+                var address = doc.data().hood;
+                var d1 = $("#quotes-go-here").append(
+                    "<div class='card' style='width: 18rem;'>" +
+                    "<img class='card-img-top' src='images/blah.jpg' alt='Card image cap'>" +
+                    "<div class='card-body'>" +
+                    "<h5 class='card-title'>" + name + "</h5>" +
+                    "<p class='card-text'>Some quick example text.</p>" +
+                    "<a href='#' class='btn btn-primary'>Go somewhere</a>" +
+                    "<div class='ratings'>" +
+                    "* * * * * (stars go here)" +
+                    "</div)" +
+                    "</div>" +
+                    "</div)");
+            })
+        })
+}
+//getRestaurantCardwithStars();
+
+//------------------------------------------------------------------
+//  This function creates a grid of 3 columns per row, 
+//  based on a unknown number of items in the collection
+//  Each column has a unique id "c1", "c2" etc. 
+//------------------------------------------------------------------
+/*
+<div class="container">
+    <div class="row">
+        <div class="col">
+             1 of 3
+         </div>
+         <div class="col">
+             1 of 3
+        </div>
+        <div class="col">
+            1 of 3
+        </div>
+    </div>
+</div> 
+*/
+
+function printCards(mycollection) {
+    db.collection(mycollection)
+        .get()
+        .then(function (snap) {
+            console.log(snap.size);
+            console.log("create new container grid");
+            console.log("create new row");
+
+            var message =
+                "<div class='container'>" +
+                "<div class='row'>";
+
+            for (var i = 1; i <= snap.size; i++) {
+                console.log(i);
+                console.log("create a column and one card");
+                var cid = "c"+i;
+                message = message +
+                    "<div class='col' id=" + cid + ">" +
+                    "</div>"
+                if (!(i % 3)) {
+                    console.log("end the row")
+                    console.log("create new row");
+                    message = message +
+                        "</div>" +
+                        "<div class='row'>"
+                }
+            }
+            console.log("end the row");
+            console.log("end container grid");
+
+            message = message +
+                "</div>" +
+                "</div>"
+
+            $("#quotes-go-here").append(message);
+        })
+}
+printCards("shops");
+
+//----------------------------------------------------------------------
+//  This function populates the slots identified by "c1", "c2" etc.
+//  with a bootrap card with information from the collection
+//----------------------------------------------------------------------
+function fillCards(mycollection) {
+    db.collection(mycollection)
+        .get()
+        .then(function (snap) {
+            var i=0;
+            snap.forEach(function (doc) {
+                console.log(doc.data());
+                var name = doc.data().name;
+                var address = doc.data().hood;
+                i = i + 1;
+                var card = "#c"+i;
+                console.log(card);
+                var d1 = $(card).append(
+                    "<div class='card' style='width: 18rem;'>" +
+                    "<img class='card-img-top' src='images/blah.jpg' alt='Card image cap'>" +
+                    "<div class='card-body'>" +
+                    "<h5 class='card-title'>" + name + "</h5>" +
+                    "<p class='card-text'>Some quick example text.</p>" +
+                    "<a href='#' class='btn btn-primary'>Go somewhere</a>" +
+                    "<div class='ratings'>" +
+                    "* * * * * (stars go here)" +
+                    "</div)" +
+                    "</div>" +
+                    "</div)");
+            })
+        })
+}
+fillCards("shops");
