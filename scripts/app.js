@@ -380,7 +380,7 @@ function createGrid(mycollection) {
             for (var i = 1; i <= snap.size; i++) {
                 console.log(i);
                 console.log("create a column and one card");
-                var cid = "c"+i;
+                var cid = "c" + i;
                 message = message +
                     "<div class='col' id=" + cid + ">" +
                     "</div>"
@@ -399,40 +399,147 @@ function createGrid(mycollection) {
                 "</div>" +
                 "</div>"
 
-            $("#quotes-go-here").append(message);
+            $("#restaurants-go-here").append(message);
         })
 }
-createGrid("shops");
+createGrid("restaurants");
 
 //----------------------------------------------------------------------
 //  This function populates the slots identified by "c1", "c2" etc.
 //  with a bootrap card with information from the collection
+//  Inserts a little heart beside restaurant name. 
 //----------------------------------------------------------------------
 function fillCards(mycollection) {
     db.collection(mycollection)
         .get()
         .then(function (snap) {
-            var i=0;
+            var i = 0;
             snap.forEach(function (doc) {
                 console.log(doc.data());
                 var name = doc.data().name;
-                var address = doc.data().location;
+                var address = doc.data().hood;
+                var image = doc.data().image;
+                var id = doc.id;
+
+                // This i is to get the bootstrap card that we created in our grid
                 i = i + 1;
-                var card = "#c"+i;
+                var card = "#c" + i;
                 console.log(card);
+
+                //The following line adds the content for bootstrap card
                 var d1 = $(card).append(
                     "<div class='card' style='width: 18rem;'>" +
-                    "<img class='card-img-top' src='images/blah.jpg' alt='Card image cap'>" +
+                    "<img class='card-img-top' src='images/" + image + "' alt='Card image cap'>" +
                     "<div class='card-body'>" +
-                    "<h5 class='card-title'>" + name + "</h5>" +
-                    "<p class='card-text'> "+ address + "</p>" +
-                    "<a href='#' class='btn btn-primary'>Go somewhere</a>" +
+                    "<h5 class='card-title'>" + name + 
+                    " <i id='" + id + "' class='far fa-heart'> </i>" +      //regular "hollow" heart
+                    "</h5>" +
+                    "<p class='card-text'> " + address + "</p>" +
+                    "<a href='#' class='btn btn-primary'>Go Somewhere</a>" +
                     "<div class='ratings'>" +
-                    "* * * * * (stars go here)" +
                     "</div)" +
                     "</div>" +
                     "</div)");
+
+                addListenerToggleHearts(id);
             })
         })
 }
-fillCards("shops");
+fillCards("restaurants");
+
+//-------------------------------------------------------
+// This helper function will add listener to the heart with "id"
+// Then toggle the hearts from two font-awesome icons (full-heart and empty-heart)
+// Depending on the toggle, update the faves array in database (add or remove)
+//--------------------------------------------------------
+function addListenerToggleHearts(id) {
+    // When the Heart is clicked
+    $("#" + id).click(function () { //add listener 
+
+        // Toggle between the full-heart ("fas", solid), and the empty-heart ("far", regular outline heart)
+        $(this).toggleClass("fas far");
+
+        // If the "fas" (solid heart) class is here, then add to faves, else remove from faves
+        if ($("#" + id).hasClass('fas')) {
+            console.log("ON");
+            // Save to database
+            firebase.auth().onAuthStateChanged(function (user) {
+                db.collection("users").doc(user.uid).update({
+                    faves: firebase.firestore.FieldValue.arrayUnion(id)
+                })
+            })
+        } else {
+            console.log("OFF");
+            // Remove from database
+            firebase.auth().onAuthStateChanged(function (user) {
+                db.collection("users").doc(user.uid).update({
+                    faves: firebase.firestore.FieldValue.arrayRemove(id)
+                })
+            })
+        }
+    });
+}
+
+
+//--------------------------------------------------------------------------------
+//  This function read the collection of restaurants,
+//  Dynamically create a place to display each restaurant,
+//  Put a "heart" (font-awesome icon) beside the name with "id" (document id of the restaurant)
+//  Then, add a listener to the heart.
+//  In the handler:  
+//      - toggle between the full heart, and the outline heart
+//      - if the full heart is chosen, then add to faves array
+//      - otherwise, remove from faves array
+//-------------------------------------------------------------------------------
+function displayRestaurantsWithHeart() {
+    db.collection("restaurants")
+        .get()
+        .then(function (snap) {
+            snap.forEach(function (doc) {
+                var name = doc.data().name;
+                var id = doc.id;
+                //console.log(name);
+
+                //Display restaurant name, followed by a heart fontawesome icon
+                $("#restaurants-go-here")
+                    .append("<p> " + name +
+                        " <i id='" + id + "' class='fa heart fa-heart-o'> </i>"); //add heart class from fontawesome
+
+                // When the Heart is clicked
+                $("#" + id).click(function () { //add listener 
+
+                    // Toggle between the full-heart ("fa-heart"), and the empty-heart ("fa-heart-o", outline heart)
+                    $(this).toggleClass("fa-heart fa-heart-o");
+
+                    // If the "fa-heart" class is here, then add to faves, else remove from faves
+                    if ($("#" + id).hasClass('fa-heart')) {
+                        console.log("ON");
+                        // Save to database
+                        firebase.auth().onAuthStateChanged(function (user) {
+                            db.collection("users").doc(user.uid).update({
+                                faves: firebase.firestore.FieldValue.arrayUnion(id)
+                            })
+                        })
+                    } else {
+                        console.log("OFF");
+                        // Remove from database
+                        firebase.auth().onAuthStateChanged(function (user) {
+                            db.collection("users").doc(user.uid).update({
+                                faves: firebase.firestore.FieldValue.arrayRemove(id)
+                            })
+                        })
+                    }
+                });
+            })
+        })
+}
+//displayRestaurantsWithHeart();
+
+function userPost(){
+    document.getElementById("myPostBtn").addEventListener('click', function () {
+        var comments = $("#comments1").val();
+        console.log(comments);
+        $("#comments2").html(comments);
+    });
+}
+userPost();

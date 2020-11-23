@@ -14,6 +14,9 @@
     <!-- Firebase CSS for Authentication UI     -->
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
 
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/26da0e4274.js" crossorigin="anonymous"></script>
+
     <!-- Optional CSS of your own               -->
     <link type="text/css" rel="stylesheet" href="styles/app.css" />
 </head>
@@ -45,15 +48,29 @@
     </nav>
 
     <div class="jumbotron">
+        <h1 class="display-4">This is a Display of some Font Awesome Icons</h1>
+        <i class="fas fa-heart"></i>
+        <i class="far fa-heart"></i>
+        <i class="fas fa-circle-notch fa-spin"></i>
+        <i class="fas fa-sync fa-spin"></i>
+        <i class="fas fa-cog fa-spin"></i>
+        <i class="fas fa-spinner fa-pulse"></i>
+        <i class="fas fa-stroopwafel fa-spin"></i>
+        <i class="fas fa-home"></i>
+        <img src="images/home-solid.svg">
+    </div>
+
+    <!-- This is where shops are to be displayed -->
+    <div class="jumbotron">
         <h1 class="display-4">Post your shop here</h1>
         <div class="container">
             <div class="row">
                 <div class="col-sm">
                     <!-- Basic Form -->
                     <form id="myform">
-                    <br>
-                    <label>Shop Name:</label><br>
-                    <input type=" text" id="name" value="Carly's Coffee"><br><br>
+                        <br>
+                        <label>Shop Name:</label><br>
+                        <input type=" text" id="name" value="Carly's Coffee"><br><br>
                         <label>Neighbourhood:</label><br>
                         <input type="text" id="hood" value="Central Burnaby"><br><br>
                         <label>Tell us why your cafe covid-friendly:</label><br>
@@ -108,19 +125,36 @@
         <button id="addButton">ADD</button>
     </div>
 
+    <!-- This is where restaurants are to be displayed -->
+    <div class="jumbotron">
+        <h1 class="display-4">Display of restaurants</h1>
+        <div id="restaurants-go-here"></div>
+    </div>
+
+    <!-- Input post -->
+    <div class="jumbotron">
+        <h1 class="display-4">Please enter your comments here</h1>
+        <p> Comments: </p> <input type="text" id="comments1">
+        <button id="myPostBtn">POST</button>
+        <hr>
+        <p> What you typed: </p>
+        <p id="comments2"> stuff </p>
+        <hr>
+    </div>
+
     <!-------------------------------------------->
     <!-- The following is JS for functionality  -->
     <!-------------------------------------------->
     <!-- Bootstrap libraries from CDN -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+        </script>
 
     <!-- Firebase libraries from CDN -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
