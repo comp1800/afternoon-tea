@@ -431,8 +431,8 @@ function fillCards(mycollection) {
                     "<div class='card' style='width: 18rem;'>" +
                     "<img class='card-img-top' src='images/" + image + "' alt='Card image cap'>" +
                     "<div class='card-body'>" +
-                    "<h5 class='card-title'>" + name + 
-                    " <i id='" + id + "' class='far fa-heart'> </i>" +      //regular "hollow" heart
+                    "<h5 class='card-title'>" + name +
+                    " <i id='" + id + "' class='far fa-heart'> </i>" + //regular "hollow" heart
                     "</h5>" +
                     "<p class='card-text'> " + address + "</p>" +
                     "<a href='#' class='btn btn-primary'>Go Somewhere</a>" +
@@ -535,11 +535,39 @@ function displayRestaurantsWithHeart() {
 }
 //displayRestaurantsWithHeart();
 
-function userPost(){
+function userPost() {
     document.getElementById("myPostBtn").addEventListener('click', function () {
-        var comments = $("#comments1").val();
-        console.log(comments);
-        $("#comments2").html(comments);
+
+        firebase.auth().onAuthStateChanged(function (user) {
+
+            // grab comment from input text box
+            var comments = $("#comments1").val();
+            console.log(comments);
+
+            // replace the html content of an existing div
+            $("#comments2").html(comments);
+            // OR, dynamically create (append) a brand new div
+            $("#comments2")
+                .append("<div> The comment from " + user.displayName + " was: " + comments + "</div>");
+
+            // write this comment to the database
+            db.collection("comments")
+                .add({
+                    "comments": comments
+                })
+        })
     });
 }
 userPost();
+
+function getUsersWithQuery(){
+    db.collection("users")
+    .where("soccer", "==", true)
+    .get()
+    .then (function(snap){
+        snap.forEach(function(doc){
+            console.log("likes soccer: ", doc.data().name);
+        })
+    })
+}
+getUsersWithQuery();

@@ -1,7 +1,33 @@
 
-
+/*----------------------------------------
+ * Add heart icon
+ *----------------------------------------
+ */
 .fa-heart {
     font-size: 30px;
     color:rgb(238, 131, 131);
 }
+#myfooter.fa-home{
+    color:brown;
+}
 
+/*----------------------------------------
+ * Add background colour for body
+ *----------------------------------------
+ */
+html body {
+    background-color: #c78315;
+}
+/*-------------------------------------------------------
+ * Define the circle used for our tables, and text inside
+ *------------------------------------------------------
+ */
+ .btn-table { 
+    width: 70px; 
+    height: 70px; 
+    padding: 10px 16px; 
+    border-radius: 35px; 
+    font-size: 20px; 
+    text-align: center; 
+    background-color: rgb(201, 201, 122);
+} 
