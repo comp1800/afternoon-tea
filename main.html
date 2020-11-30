@@ -57,7 +57,8 @@
         <i class="fas fa-spinner fa-pulse"></i>
         <i class="fas fa-stroopwafel fa-spin"></i>
         <i class="fas fa-home"></i>
-        <img src="images/home-solid.svg">
+        <br> This image is from svg file:
+        <img src="images/home-solid.svg" weight=50 height=50>
     </div>
 
     <!-- This is where shops are to be displayed -->
@@ -142,6 +143,14 @@
         <hr>
     </div>
 
+    <!-- This is where user upload image file -->
+    <div class="jumbotron">
+        <h1 class="display-4">Please upload your profile file here</h1>
+        <input type="file" value="upload" id="fileButton" />
+        <hr>
+        <div id="mypic"></div>
+    </div>
+
     <footer class="navbar justify-content-around bg-warning fixed-bottom">
         <i id="myfooter" class="fas fa-home"></i>
         <i class="fas fa-cog fa-spin"></i>
@@ -166,6 +175,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.1.1/firebase-storage.js"></script>
+
 
     <!-- Your own Firebase API key information -->
     <script src="scripts/firebase_api_carly.js"> </script>

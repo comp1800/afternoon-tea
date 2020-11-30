@@ -38,6 +38,9 @@ function addListener() {
                 "open-window": check1.checked, //boolean value
                 "patio-seating": check2.checked //true if checked
             })
+            .then(function () {
+                console.log("write to shops successful!");
+            })
     })
 }
 //addListener();
@@ -405,7 +408,7 @@ function createGrid(mycollection) {
 createGrid("restaurants");
 
 //----------------------------------------------------------------------
-//  This function populates the slots identified by "c1", "c2" etc.
+//  This function adds the slots identified by "c1", "c2" etc.
 //  with a bootrap card with information from the collection
 //  Inserts a little heart beside restaurant name. 
 //----------------------------------------------------------------------
@@ -560,14 +563,60 @@ function userPost() {
 }
 userPost();
 
-function getUsersWithQuery(){
+function getUsersWithQuery() {
     db.collection("users")
-    .where("soccer", "==", true)
-    .get()
-    .then (function(snap){
-        snap.forEach(function(doc){
-            console.log("likes soccer: ", doc.data().name);
+        .where("soccer", "==", true)
+        .get()
+        .then(function (snap) {
+            snap.forEach(function (doc) {
+                console.log("likes soccer: ", doc.data().name);
+            })
+        })
+}
+getUsersWithQuery();
+
+//-----------------------------------------------------------------
+// To let user upload a file to firebase storage service
+// Assume there's an "upload file" button. 
+//-----------------------------------------------------------------
+function uploadUserProfilePic() {
+    // Let's assume my storage is only enabled for authenticated users 
+    // This is set in your firebase console storage "rules" tab
+    firebase.auth().onAuthStateChanged(function (user) {
+        // get Elements 
+        var uploader = document.getElementById('uploader-progress');
+        var fileButton = document.getElementById("fileButton");
+
+        // listen for file selection
+        fileButton.addEventListener('change', function (e) {
+            var file = e.target.files[0];       // Get file with file browser
+            var storageRef = firebase.storage().ref("images/" + user.uid + ".jpg");  // Get reference
+            storageRef.put(file);    // Upload file
+
+            // storage bucket plus folder plus image name, which is the user's doc id
+            //var picref = "gs://mango-smoothie.appspot.com/images/"+user.uid + ".jpg";
+
+            storageRef.getDownloadURL()
+            .then(function(url){     // Get URL of the uploaded file
+                console.log(url);    // Save the URL into users collection
+                db.collection("users").doc(user.uid).update({
+                    "profilePic": url
+                })
+            })
         })
     })
 }
-getUsersWithQuery();
+uploadUserProfilePic();
+
+function displayUserProfilePic(){
+    firebase.auth().onAuthStateChanged(function(user){
+        db.collection("users").doc(user.uid)
+        .get()
+        .then(function(doc){
+            var picUrl = doc.data().profilePic;
+            console.log(picUrl);
+            $("#mypic").append("<img src='" + picUrl + "'>")
+        })
+    })
+}
+displayUserProfilePic();

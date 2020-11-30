@@ -91,7 +91,8 @@ function displayAllTables(restaurant) {
                 console.log(seats);
 
                 // create the table-circles; use a button, but not connected to listener
-                var t = $("<button type='button' class='btn btn-table'>" + seats + "</button><br>");
+                var t = $("<button type='button' class='btn btn-table'>" 
+                + seats + " <i class='fas fa-chair'></i> </button><br>");
 
                 // create the 3 time-slot buttons
                 // data-toggle="modal" data-target="#exampleModal"
